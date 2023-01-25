@@ -1,0 +1,20 @@
+package com.reactive.screeningdata;
+
+import io.r2dbc.spi.ConnectionFactory;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
+import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
+
+@TestConfiguration
+public class TestConfig {
+    @Bean
+    public ConnectionFactoryInitializer connectionFactoryInitializer(ConnectionFactory connectionFactory) {
+        var connectionFactoryInitializer = new ConnectionFactoryInitializer();
+        connectionFactoryInitializer.setConnectionFactory(connectionFactory);
+        connectionFactoryInitializer.setDatabasePopulator(new ResourceDatabasePopulator(new ClassPathResource("db/schema.sql"),
+                new ClassPathResource("db/data.sql")));
+        return connectionFactoryInitializer;
+    }
+}

@@ -1,0 +1,214 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 01-create-screening-task-table
+      author: jgolubovic
+      changes:
+        - createTable:
+            schema: public
+            tableName: screening_task
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: result_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: assigned_to
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 02-create-screening-result-table
+      author: jgolubovic
+      changes:
+        - createTable:
+            schema: public
+            tableName: screening_result
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: booked_by_customer_code
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: booked_by_customer_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cargo_documentation_description
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: commodity_code
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: commodity_description
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: consignee_address_line1
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: consignee_customer_code
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: consignee_customer_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: contractual_customer_customer_code
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: contractual_customer_customer_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_notify_address_line1
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_notify_customer_code
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_notify_customer_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: haz
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: operator
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: pod_country_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: por_country_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: second_notify_address_line1
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: second_notify_customer_code
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: second_notify_customer_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: shipment_number
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: shipper_address_line1
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: shipper_address_line2
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: shipper_customer_code
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: shipper_customer_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tp_doc
+                  type: int
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 03-add-relations
+      author: jgolubovic
+      changes:
+        - addColumn:
+            schema: public
+            tableName: screening_result
+            columns:
+              name: screening_task_id
+              type: int
+              constraints:
+                foreignKeyName: fk_screening_task_id
+                references: screening_task(id)
+
+  - changeSet:
+      id: 04-add-mock-data
+      author: jgolubovic
+      dbms: '!h2'
+      changes:
+        - sqlFile:
+            encoding: utf-8
+            splitStatements: false
+            path: db/mock/insert_mock_screening_result.sql
